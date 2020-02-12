@@ -23,4 +23,13 @@ calculateFullDayWage(){
 
 calculateFullDayWage
 fullDayWage=$?
-echo "$fullDayWage"
+echo $fullDayWage
+partTimeHour=4
+calculatePartTimeWage(){
+	#echo "$((wagePerHour*partTimeHour))"
+	return $((wagePerHour*partTimeHour))
+}
+
+calculatePartTimeWage
+partTimeWage=$?
+echo $partTimeWage
