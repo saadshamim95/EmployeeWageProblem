@@ -41,7 +41,7 @@ totalWages=0
 present=0
 totalWorkingHours=0
 
-declare -A dailyWage
+declare -a dailyWage
 
 getWorkingHours(){
 	hours=$1
@@ -49,19 +49,21 @@ getWorkingHours(){
 	do
 		checkAttendance
 		res=$?
-		if(( $res==1 ))
+		if(($res==1))
 		then
 			present=$((present+1))
 			totalWorkingHours=$((totalWorkingHours+hours))
 			if((totalWorkingHours>100))
 			then
 				hours=$(( hours-$((totalWorkingHours-100)) ))
-				dailyWage[$count]=$((hours*wagePerHour))
+				dailyWage[count]=$((hours*wagePerHour))
 				totalWorkingHours=100
 				return
 			else
-				dailyWage[$count]=4((hours*wagePerHour))
+				dailyWage[count]=$((hours*wagePerHour))
 			fi
+		else
+			dailyWage[count]=0
 		fi
 		count=$((count+1))
 	done
@@ -81,11 +83,12 @@ case $choice in
 *)	echo "Enter valid choice"
 esac
 
-echo "Employee worked $present days this month"
-echo "Total Working hours: $totalWorkingHours"
-echo "Total wage of this month: $totalWages"
 echo "Daily Wage this month:"
 for((i=0;i<20;i++))
 do
 	echo -n "${dailyWage[$i]} "
 done
+echo ""
+echo "Employee worked $present days this month"
+echo "Total Working hours: $totalWorkingHours"
+echo "Total wage of this month: $totalWages"
