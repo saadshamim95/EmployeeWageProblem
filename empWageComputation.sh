@@ -39,22 +39,30 @@ calculatePartTimeWage
 days=0
 totalWages=0
 present=0
+totalWorkingHours=0
 
 echo "Enter the type of Employement"
 echo "1. Full Time"
 echo "2. Part Time"
 read choice
 case $choice in
-1) 	while((count!=20))
+1)	while((count!=20 && totalWorkingHours<100))
 	do
 		checkAttendance
 		res=$?
 		if(( $res==1 ))
 		then
 			present=$((present+1))
-			calculateFullDayWage
-			totalWages=$(($?+totalWages))
-			#echo $totalWages
+			totalWorkingHours=$((totalWorkingHours+fullDayHour))
+			if((totalWorkingHours>100))
+			then
+				totalWorkingHours=100
+				totalWages=$((wagePerHour*totalWorkingHours))
+			else
+				calculateFullDayWage
+				totalWages=$(($?+totalWages))
+				#echo $totalWages
+			fi
 		fi
 		count=$((count+1))
 	done
@@ -66,6 +74,7 @@ case $choice in
 		if(( $res==1 ))
 		then
 			present=$((present+1))
+			totalWorkingHours=$((totalWorkingHours+4))
 			calculatePartTimeWage
 			totalWages=$(($?+totalWages))
 			#echo $totalWages
@@ -73,7 +82,8 @@ case $choice in
 		count=$((count+1))
 	done
 	;;
-*)	echo "Not a valid Input"
+*)	echo "Enter valid choice"
 esac
 echo "Employee worked $present days this month"
-echo "Total Wages: $totalWages"
+echo "Total Working hours: $totalWorkingHours"
+echo "Total wage of this month: $totalWages"
