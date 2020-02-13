@@ -7,22 +7,34 @@ checkAttendance(){
 	attendance=$((RANDOM%2))
 	if((attendance==0))
 	then
+		#echo "Employee is absent"
 		return 0
 	else
+		#echo "Employee is present"
 		return 1
 	fi
 }
 
+#checkAttendance
 wagePerHour=20
 fullDayHour=8
 calculateFullDayWage(){
+	#echo "$((wagePerHour*fullDayHour))"
 	return $((wagePerHour*fullDayHour))
 }
 
+#calculateFullDayWage
+#fullDayWage=$?
+#echo $fullDayWage
 partTimeHour=4
 calculatePartTimeWage(){
+	#echo "$((wagePerHour*partTimeHour))"
 	return $((wagePerHour*partTimeHour))
 }
+
+#calculatePartTimeWage
+#partTimeWage=$?
+#echo $partTimeWage
 
 days=0
 totalWages=0
@@ -73,7 +85,7 @@ case $choice in
 esac
 
 echo "Daily Wage this month:"
-for((i=0;i<${#dailyWage[@]};i++))
+for((i=0;i<20;i++))
 do
 	printf  "Day %02d: ${dailyWage[$i]}\n" "$((i+1))"
 done
