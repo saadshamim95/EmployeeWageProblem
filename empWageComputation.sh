@@ -40,6 +40,7 @@ days=0
 totalWages=0
 present=0
 totalWorkingHours=0
+count=0
 
 declare -a dailyWage
 
@@ -86,7 +87,7 @@ esac
 echo "Daily Wage this month:"
 for((i=0;i<20;i++))
 do
-	echo -n "${dailyWage[$i]} "
+	printf  "Day %02d: ${dailyWage[$i]}\n" "$((i+1))"
 done
 echo ""
 echo "Employee worked $present days this month"
