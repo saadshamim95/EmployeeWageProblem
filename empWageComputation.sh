@@ -41,6 +41,8 @@ totalWages=0
 present=0
 totalWorkingHours=0
 
+declare -A dailyWage
+
 getWorkingHours(){
 	hours=$1
 	while((count!=20 && totalWorkingHours<100))
@@ -53,8 +55,12 @@ getWorkingHours(){
 			totalWorkingHours=$((totalWorkingHours+hours))
 			if((totalWorkingHours>100))
 			then
+				hours=$(( hours-$((totalWorkingHours-100)) ))
+				dailyWage[$count]=$((hours*wagePerHour))
 				totalWorkingHours=100
 				return
+			else
+				dailyWage[$count]=4((hours*wagePerHour))
 			fi
 		fi
 		count=$((count+1))
@@ -66,7 +72,7 @@ echo "1. Full Time"
 echo "2. Part Time"
 read choice
 case $choice in
-1)	getWorkingHours fullDayHour
+1)	getWorkingHours fullDayHour 
 	totalWages=$((totalWorkingHours*wagePerHour))
 	;;
 2)	getWorkingHours partTimeHour
@@ -78,3 +84,8 @@ esac
 echo "Employee worked $present days this month"
 echo "Total Working hours: $totalWorkingHours"
 echo "Total wage of this month: $totalWages"
+echo "Daily Wage this month:"
+for((i=0;i<20;i++))
+do
+	echo -n "${dailyWage[$i]} "
+done
