@@ -22,54 +22,32 @@ present=0
 totalWorkingHours=0
 
 getWorkingHours(){
+	hours=$1
 	while((count!=20 && totalWorkingHours<100))
 	do
 		checkAttendance
 		res=$?
 		if(( $res==1 ))
 		then
-			
+			present=$((present+1))
+			totalWorkingHours=$((totalWorkingHours+hours))
+			if((totalWorkingHours>100))
+			then
+				totalWorkingHours=100
+				return
+			fi
 		fi
+		count=$((count+1))
 	done
 }
 
 read choice
 case $choice in
-1)	while((count!=20 && totalWorkingHours<100))
-	do
-		checkAttendance
-		res=$?
-		if(( $res==1 ))
-		then
-			present=$((present+1))
-			totalWorkingHours=$((totalWorkingHours+8))
-			if((totalWorkingHours>100))
-			then
-				totalWorkingHours=100
-				totalWages=$((20*totalWorkingHours))
-			else
-				calculateFullDayWage
-				totalWages=$(($?+totalWages))
-				#echo $totalWages
-			fi
-		fi
-		count=$((count+1))
-	done
+1)	getWorkingHours 8
+	totalWages=$((totalWorkingHours*20))
 	;;
-2)	while((count!=20))
-	do
-		checkAttendance
-		res=$?
-		if(( $res==1 ))
-		then
-			present=$((present+1))
-			totalWorkingHours=$((totalWorkingHours+4))
-			calculatePartTimeWage
-			totalWages=$(($?+totalWages))
-			#echo $totalWages
-		fi
-		count=$((count+1))
-	done
+2)	getWorkingHours 4
+	totalWages=$((totalWorkingHours*20))
 	;;
 *)	echo "Enter valid choice"
 esac
